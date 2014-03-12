@@ -30,7 +30,6 @@
             </intent-filter>
         </receiver>
     
-        <activity android:launchMode="singleTop" android:name=".RegisterGCM"/>
 </application>
 
 </manifest>
