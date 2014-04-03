@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   
  <servlet>
+     <servlet-name>UrlGenServlet</servlet-name>
+     <servlet-class>com.gplayer.UrlGenServlet</servlet-class>
+ </servlet>   
+ <servlet-mapping>
+    <servlet-name>UrlGenServlet</servlet-name>
+    <url-pattern>/_ah/getuploadurl/</url-pattern>
+  </servlet-mapping>   
+ <servlet>
+  <servlet-name>DataChannelServlet</servlet-name>
+  <servlet-class>com.gplayer.DataChannelServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>DataChannelServlet</servlet-name>
+  <url-pattern>/_ah/channel/*</url-pattern>
+ </servlet-mapping>
+ <servlet>
+ <servlet-name>ReceiverServlet</servlet-name>
+    <servlet-class>com.gplayer.ReceiverServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReceiverServlet</servlet-name>
+    <url-pattern>/data</url-pattern>
+  </servlet-mapping>   
+ <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
