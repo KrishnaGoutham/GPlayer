@@ -2,13 +2,10 @@ package com.gplayer;
 
 import java.io.IOException;
 
-import com.gplayer.messageEndpoint.MessageEndpoint;
-import com.gplayer.messageEndpoint.model.CollectionResponseMessageData;
-import com.gplayer.messageEndpoint.model.MessageData;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.json.jackson.JacksonFactory;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +19,16 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.json.jackson.JacksonFactory;
+import com.gplayer.messageEndpoint.MessageEndpoint;
+import com.gplayer.messageEndpoint.model.CollectionResponseMessageData;
+import com.gplayer.messageEndpoint.model.MessageData;
+
+import edu.gvsu.cis.masl.channelAPI.XHR;
 
 /**
  * An activity that communicates with your App Engine backend via Cloud
@@ -66,6 +73,8 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
 
+    new UploadDataTask(this).execute();
+    
     Button regButton = (Button) findViewById(R.id.regButton);
 
     registerListener = new OnTouchListener() {
@@ -227,6 +236,30 @@ public class MainActivity extends Activity {
             }).show();
   }
 
+	private class UploadDataTask 
+	  extends AsyncTask<Void, Void, Void> 
+	{
+		
+		public UploadDataTask(Activity activity) 
+		{
+		  
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) 
+		{
+			//DataUploader uploader = new DataUploader();
+			
+			return null;
+		}
+		
+		protected void onPostExecute(CollectionResponseMessageData messages) 
+		{
+		  
+		}   
+	}
+  
+  
   /*
    * Need to run this in background so we don't hold up the UI thread, 
    * this task will ask the App Engine backend for the last 5 messages
