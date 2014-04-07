@@ -2,11 +2,6 @@ package com.gplayer;
 
 import java.io.IOException;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,8 +22,6 @@ import com.google.api.client.json.jackson.JacksonFactory;
 import com.gplayer.messageEndpoint.MessageEndpoint;
 import com.gplayer.messageEndpoint.model.CollectionResponseMessageData;
 import com.gplayer.messageEndpoint.model.MessageData;
-
-import edu.gvsu.cis.masl.channelAPI.XHR;
 
 /**
  * An activity that communicates with your App Engine backend via Cloud
@@ -248,7 +241,8 @@ public class MainActivity extends Activity {
 		@Override
 		protected Void doInBackground(Void... params) 
 		{
-			//DataUploader uploader = new DataUploader();
+			FileUploader uploader = new FileUploader();
+			uploader.upload("file:///android_asset/file.mp3");
 			
 			return null;
 		}
