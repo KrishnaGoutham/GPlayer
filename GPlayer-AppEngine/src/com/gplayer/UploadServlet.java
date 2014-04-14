@@ -17,7 +17,14 @@ public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 2628389745105886686L;
 	private BlobstoreService mblobStoreService = BlobstoreServiceFactory
 			.getBlobstoreService();
-	
+
+	/**
+	 * Sends blob-key back to client.</br></br>
+	 * 
+	 * Called after AppEngine stores the blobs to Blobstore. Retries blob-key from App-Engine
+	 * and sends to client if successful else returns error.
+	 * 
+	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

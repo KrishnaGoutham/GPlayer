@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mortbay.log.Log;
+
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -22,6 +24,13 @@ public class DownloadServlet extends HttpServlet {
 			throws ServletException, IOException 
 	{
 		BlobKey blobKey = new BlobKey(req.getParameter("blob-key"));
-		mblobStoreService.serve(blobKey, resp);
+		
+		try {
+			resp.setHeader("status", "success");
+			mblobStoreService.serve(blobKey, resp);
+		} catch (IOException e) {
+			Log.info(this.getServletName()+":Invalid blob-key"+blobKey);
+			resp.setHeader("status", "failed");
+		}
 	}
 }

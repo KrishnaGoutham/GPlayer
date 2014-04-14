@@ -1,7 +1,6 @@
 package com.gplayer;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,6 +72,10 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
 
+    
+    // Register GCM if not already registered and save to local storage.
+    
+    
     new UploadDataTask(this).execute();
     
     Button regButton = (Button) findViewById(R.id.regButton);
