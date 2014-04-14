@@ -13,18 +13,12 @@ import com.google.appengine.api.channel.ChannelServiceFactory;
 
 public class DataChannelServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -483782284393789188L;
     private static final Logger log = Logger.getLogger(DataChannelServlet.class.getName());
-
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		//super.doGet(req, resp);
 		
 		String channelKey = req.getParameter("c");
 		
@@ -37,10 +31,8 @@ public class DataChannelServlet extends HttpServlet {
 	    //Send the client the 'token' + the 'channelKey' this way the client can start using the new channel
 	    resp.setContentType("text/html");
 	    StringBuffer sb = new StringBuffer();
-	    sb.append("{ \"channelKey\":\"" + channelKey + "\",\"token\":\"" + token + "\"}");
+	    sb.append("{\"channelKey\":\"" + channelKey + "\",\"token\":\"" + token + "\"}");
 	    
-	    resp.getWriter().write(sb.toString());
-		
+	    resp.getWriter().write(sb.toString());		
 	}
-
 }

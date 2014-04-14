@@ -17,13 +17,21 @@
   <url-pattern>/_ah/channel/*</url-pattern>
  </servlet-mapping>
  <servlet>
- <servlet-name>ReceiverServlet</servlet-name>
-    <servlet-class>com.gplayer.ReceiverServlet</servlet-class>
+ 	<servlet-name>UploadServlet</servlet-name>
+    <servlet-class>com.gplayer.UploadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ReceiverServlet</servlet-name>
-    <url-pattern>/data</url-pattern>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/upload</url-pattern>
   </servlet-mapping>   
+ <servlet>
+ 	<servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>com.gplayer.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/_ah/download</url-pattern>
+ </servlet-mapping>   
  <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>

@@ -1,11 +1,16 @@
 package com.gplayer;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +19,13 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.client.util.IOUtils;
 import com.gplayer.messageEndpoint.MessageEndpoint;
 import com.gplayer.messageEndpoint.model.CollectionResponseMessageData;
 import com.gplayer.messageEndpoint.model.MessageData;
@@ -230,7 +237,7 @@ public class MainActivity extends Activity {
   }
 
 	private class UploadDataTask 
-	  extends AsyncTask<Void, Void, Void> 
+	  extends AsyncTask<Void, String, String> 
 	{
 		
 		public UploadDataTask(Activity activity) 
@@ -239,16 +246,73 @@ public class MainActivity extends Activity {
 		}
 		
 		@Override
-		protected Void doInBackground(Void... params) 
+		protected String doInBackground(Void... params) 
 		{
 			FileUploader uploader = new FileUploader();
-			uploader.upload("file:///android_asset/file.mp3");
+			String blobkey = null;
+			String filePath = null;
 			
-			return null;
+			//File tempFile = new File("file:///android_asset/file.mp3");
+			try {
+				File tempFile = File.createTempFile("fileupload", ".mp3");
+				FileInputStream in = getAssets().openFd("file.mp3").createInputStream();
+				FileOutputStream out = new FileOutputStream(tempFile);
+				
+				IOUtils.copy(in, out);
+				in.close();
+				out.close();
+				
+				blobkey = uploader.upload(tempFile);
+			} catch (IOException e) {
+				
+			}
+			
+			if (blobkey != null) {
+				FileDownloader downloader = new FileDownloader();
+				
+				try {
+					File f = downloader.download(blobkey);
+					filePath = f.getAbsolutePath();
+					//play the file.
+					  MediaPlayer p = new MediaPlayer();
+					  try {
+						  FileInputStream in = new FileInputStream(f);
+						  
+						  p.setDataSource(in.getFD());
+						  p.prepare();
+						  p.start();
+
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (IOException e) {
+					
+				}
+				
+			}
+						
+			return filePath;
 		}
 		
-		protected void onPostExecute(CollectionResponseMessageData messages) 
+		protected void onPostExecute(String result) 
 		{
+		  if (result == null) {
+			  Toast.makeText(getBaseContext(), "Check Network.", Toast.LENGTH_LONG).show();
+		  } else {
+			  Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+		  }
+		  
+		  
 		  
 		}   
 	}
