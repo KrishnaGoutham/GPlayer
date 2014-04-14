@@ -19,87 +19,87 @@ import org.json.JSONObject;
 import android.util.Log;
 import edu.gvsu.cis.masl.channelAPI.XHR;
 
-public class FileUploader {
+public class FileUploader
+{
 
-	private static final String TAG = FileUploader.class.getName();
-	private HttpClient mClient;
-	
-	public FileUploader() {
-		mClient = new DefaultHttpClient();
-	}
+    private static final String TAG = FileUploader.class.getName();
+    private HttpClient mClient;
 
-	private String getUploadUrl() {
-		String uploadUrl = null;
-		HttpGet httpGet = new HttpGet(
-				CloudEndpointUtils.LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID
-						+ "/_ah/getuploadurl/");
-		 mClient = new DefaultHttpClient();
+    public FileUploader()
+    {
+        mClient = new DefaultHttpClient();
+    }
 
-		try {
-			XHR xhr = new XHR( mClient.execute(httpGet));
-			String response = xhr.getResponseText();
+    private String getUploadUrl()
+    {
+        String uploadUrl = null;
+        HttpGet httpGet = new HttpGet(
+                CloudEndpointUtils.LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID
+                        + "/_ah/getuploadurl/");
+        mClient = new DefaultHttpClient();
 
-			Log.i(TAG, "Response:" + response);
+        try {
+            XHR xhr = new XHR(mClient.execute(httpGet));
+            String response = xhr.getResponseText();
 
-			JSONObject jobj = new JSONObject(response);
+            Log.i(TAG, "Response:" + response);
 
-			if (jobj.getString("status").equalsIgnoreCase("success")) {
-				uploadUrl = jobj.getString("url");
+            JSONObject jobj = new JSONObject(response);
 
-				// hack
+            if (jobj.getString("status").equalsIgnoreCase("success")) {
+                uploadUrl = jobj.getString("url");
 
-				uploadUrl = uploadUrl.replace("localhost", "10.0.2.2");
-			}
+                // hack
 
-		} catch (Exception e) {
-			Log.e(TAG, "getUploadUrl():" + e.getMessage());
-			if (BuildConfig.DEBUG)
-				e.printStackTrace();
-		}
+                uploadUrl = uploadUrl.replace("localhost", "10.0.2.2");
+            }
 
-		return uploadUrl;
-	}
+        } catch (Exception e) {
+            Log.e(TAG, "getUploadUrl():" + e.getMessage());
+            if (BuildConfig.DEBUG) e.printStackTrace();
+        }
 
-	public String upload(File file) throws IOException {
-		String blobKey = null;
-		final String uploadUrl = getUploadUrl();
+        return uploadUrl;
+    }
 
-		if (uploadUrl == null)
-			return null;
+    public String upload(File file) throws IOException
+    {
+        String blobKey = null;
+        final String uploadUrl = getUploadUrl();
 
-		HttpPost httppost = new HttpPost(uploadUrl);
-		MultipartEntity entity = new MultipartEntity(
-				HttpMultipartMode.BROWSER_COMPATIBLE);
+        if (uploadUrl == null) return null;
 
-		entity.addPart("file", new FileBody(file, "application/zip"));
-		httppost.setEntity(entity);
+        HttpPost httppost = new HttpPost(uploadUrl);
+        MultipartEntity entity = new MultipartEntity(
+                HttpMultipartMode.BROWSER_COMPATIBLE);
 
-		mClient = new DefaultHttpClient();
-		mClient.getParams().setParameter(
-				CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+        entity.addPart("file", new FileBody(file, "application/zip"));
+        httppost.setEntity(entity);
 
-		try {
-			XHR xhr = new XHR(mClient.execute(httppost));
-			String response = xhr.getResponseText();
+        mClient = new DefaultHttpClient();
+        mClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION,
+                HttpVersion.HTTP_1_1);
 
-			Log.i(TAG, "Response:" + response);
+        try {
+            XHR xhr = new XHR(mClient.execute(httppost));
+            String response = xhr.getResponseText();
 
-			JSONObject jobj = new JSONObject(response);
+            Log.i(TAG, "Response:" + response);
 
-			if (jobj.getString("status").equalsIgnoreCase("success")) {
-				blobKey = jobj.getString("blob-key");
-			}
+            JSONObject jobj = new JSONObject(response);
 
-		} catch (JSONException e) {
-			Log.e(TAG, "upload:" + e.getMessage());
-			if (BuildConfig.DEBUG)
-				e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			Log.e(TAG, "upload:" + e.getMessage());
-			if (BuildConfig.DEBUG)
-				e.printStackTrace();
-		} 
+            if (jobj.getString("status").equalsIgnoreCase("success")) {
+                blobKey = jobj.getString("blob-key");
+            }
 
-		return blobKey;
-	}
+        } catch (JSONException e) {
+            Log.e(TAG, "upload:" + e.getMessage());
+            if (BuildConfig.DEBUG) e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            Log.e(TAG, "upload:" + e.getMessage());
+            if (BuildConfig.DEBUG) e.printStackTrace();
+        }
+
+        return blobKey;
+    }
 }

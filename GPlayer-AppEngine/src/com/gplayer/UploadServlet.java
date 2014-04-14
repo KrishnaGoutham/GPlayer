@@ -12,32 +12,35 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
-public class UploadServlet extends HttpServlet {
+public class UploadServlet extends HttpServlet
+{
 
-	private static final long serialVersionUID = 2628389745105886686L;
-	private BlobstoreService mblobStoreService = BlobstoreServiceFactory
-			.getBlobstoreService();
+    private static final long serialVersionUID = 2628389745105886686L;
+    private BlobstoreService mblobStoreService = BlobstoreServiceFactory
+            .getBlobstoreService();
 
-	/**
-	 * Sends blob-key back to client.</br></br>
-	 * 
-	 * Called after AppEngine stores the blobs to Blobstore. Retries blob-key from App-Engine
-	 * and sends to client if successful else returns error.
-	 * 
-	 */
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String response;
-		List<BlobKey> blobs = mblobStoreService.getUploads(req).get("file");
-		
-		if (blobs.size() > 0) {
-			BlobKey blobKey = blobs.get(0);
-			response =  "{\"status\":\"success\",\"blob-key\":\""+blobKey.getKeyString()+"\"}";
-		} else {
-			response =  "{\"status\":\"fail\",\"error\":\"No parameter file in request.\"}";
-		}
-		
-		resp.getWriter().write(response);
-	}
+    /**
+     * Sends blob-key back to client.</br></br>
+     * 
+     * Called after AppEngine stores the blobs to Blobstore. Retries blob-key
+     * from App-Engine and sends to client if successful else returns error.
+     * 
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException
+    {
+        String response;
+        List<BlobKey> blobs = mblobStoreService.getUploads(req).get("file");
+
+        if (blobs.size() > 0) {
+            BlobKey blobKey = blobs.get(0);
+            response = "{\"status\":\"success\",\"blob-key\":\""
+                    + blobKey.getKeyString() + "\"}";
+        } else {
+            response = "{\"status\":\"fail\",\"error\":\"No parameter file in request.\"}";
+        }
+
+        resp.getWriter().write(response);
+    }
 }
