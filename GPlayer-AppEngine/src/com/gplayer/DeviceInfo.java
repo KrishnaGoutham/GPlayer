@@ -32,46 +32,48 @@ public class DeviceInfo
      * indicates that the device is able to receive messages sent via GCM.
      */
     @Id
-    private String deviceRegistrationID;
+    private String mDeviceRegistrationID;
 
     /*
      * Some identifying information about the device, such as its manufacturer
      * and product name.
      */
-    private String deviceInformation;
+    private String mDeviceInformation;
+
+    private String mPhoneNumber;
 
     /*
      * Timestamp indicating when this device registered with the application.
      */
-    private long timestamp;
+    private long mTimestamp;
 
     public String getDeviceRegistrationID()
     {
-        return deviceRegistrationID;
+        return mDeviceRegistrationID;
     }
 
     public String getDeviceInformation()
     {
-        return this.deviceInformation;
+        return this.mDeviceInformation;
     }
 
     public void setDeviceRegistrationID(String deviceRegistrationID)
     {
-        this.deviceRegistrationID = deviceRegistrationID;
+        this.mDeviceRegistrationID = deviceRegistrationID;
     }
 
     public void setDeviceInformation(String deviceInformation)
     {
-        this.deviceInformation = deviceInformation;
+        this.mDeviceInformation = deviceInformation;
     }
 
     public long getTimestamp()
     {
-        return timestamp;
+        return mTimestamp;
     }
 
     public void setTimestamp(long timestamp)
     {
-        this.timestamp = timestamp;
+        this.mTimestamp = timestamp;
     }
 }

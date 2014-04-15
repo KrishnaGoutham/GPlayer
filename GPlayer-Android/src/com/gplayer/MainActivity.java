@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,7 +58,7 @@ import com.gplayer.messageEndpoint.model.MessageData;
  * For a comprehensive walkthrough, check out the documentation at
  * http://developers.google.com/eclipse/docs/cloud_endpoints
  */
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements Observer
 {
 
     enum State
@@ -74,10 +76,19 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+            
+        // Test Code
+        if (NetworkManager.initInstance(getApplicationContext())) {
+            
+            NetworkManager networkManager =  NetworkManager.getInstance();
+            boolean b = networkManager.isConnected();
+            networkManager.addObserver(this);
+        }
+        
+        
+        // TODO : Register GCM if not already registered and save to local storage.
 
-        // Register GCM if not already registered and save to local storage.
-
-        new UploadDataTask(this).execute();
+        //new UploadDataTask(this).execute();
 
         Button regButton = (Button) findViewById(R.id.regButton);
 
@@ -381,5 +392,13 @@ public class MainActivity extends Activity
                 }
             }
         }
+    }
+
+    @Override
+    public void update(Observable observable, Object data)
+    {
+        // TODO Auto-generated method stub
+        Boolean isConnected = (Boolean) data;
+        Log.i("Main", isConnected.toString());
     }
 }
