@@ -132,15 +132,15 @@
         "id" : "DeviceInfo",
         "type" : "object",
         "properties" : {
+          "timestamp" : {
+            "type" : "string",
+            "format" : "int64"
+          },
           "deviceRegistrationID" : {
             "type" : "string"
           },
           "deviceInformation" : {
             "type" : "string"
-          },
-          "timestamp" : {
-            "type" : "string",
-            "format" : "int64"
           }
         }
       },
