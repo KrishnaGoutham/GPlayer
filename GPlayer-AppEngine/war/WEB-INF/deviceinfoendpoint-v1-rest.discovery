@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/7oWMSBKGdQhk-OtJ1gWuKgJ9AG0\"",
+ "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/LQNNnUCq5yrCmbQS-OfQsRDAavo\"",
  "discoveryVersion": "v1",
  "id": "deviceinfoendpoint:v1",
  "name": "deviceinfoendpoint",
@@ -96,6 +96,9 @@
      "type": "string"
     },
     "deviceRegistrationID": {
+     "type": "string"
+    },
+    "phoneNumber": {
      "type": "string"
     },
     "timestamp": {

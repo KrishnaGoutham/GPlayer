@@ -23,11 +23,11 @@ public class DeviceInfoEndpoint
 {
 
     /**
-     * This method lists all the entities inserted in datastore. It uses HTTP
-     * GET method and paging support.
-     * 
+     * This method lists all the entities inserted in datastore.
+     * It uses HTTP GET method and paging support.
+     *
      * @return A CollectionResponse class containing the list of all entities
-     *         persisted and a cursor to the next page.
+     * persisted and a cursor to the next page.
      */
     @SuppressWarnings({ "unchecked", "unused" })
     @ApiMethod(name = "listDeviceInfo")
@@ -56,10 +56,10 @@ public class DeviceInfoEndpoint
 
             execute = (List<DeviceInfo>) query.getResultList();
             cursor = JPACursorHelper.getCursor(execute);
-            if (cursor != null) cursorString = cursor.toWebSafeString();
+            if (cursor != null)
+                cursorString = cursor.toWebSafeString();
 
-            // Tight loop for fetching all entities from datastore and
-            // accomodate
+            // Tight loop for fetching all entities from datastore and accomodate
             // for lazy fetch.
             for (DeviceInfo obj : execute)
                 ;
@@ -72,14 +72,11 @@ public class DeviceInfoEndpoint
     }
 
     /**
-     * This method gets the entity having primary key id. It uses HTTP GET
-     * method.
-     * 
-     * @param id
-     *            the primary key of the java bean.
+     * This method gets the entity having primary key id. It uses HTTP GET method.
+     *
+     * @param id the primary key of the java bean.
      * @return The entity with primary key id.
      */
-    @ApiMethod(name = "getDeviceInfo")
     public DeviceInfo getDeviceInfo(@Named("id") String id)
     {
         EntityManager mgr = getEntityManager();
@@ -93,12 +90,11 @@ public class DeviceInfoEndpoint
     }
 
     /**
-     * This inserts a new entity into App Engine datastore. If the entity
-     * already exists in the datastore, an exception is thrown. It uses HTTP
-     * POST method.
-     * 
-     * @param deviceinfo
-     *            the entity to be inserted.
+     * This inserts a new entity into App Engine datastore. If the entity already
+     * exists in the datastore, an exception is thrown.
+     * It uses HTTP POST method.
+     *
+     * @param deviceinfo the entity to be inserted.
      * @return The inserted entity.
      */
     @ApiMethod(name = "insertDeviceInfo")
@@ -106,8 +102,9 @@ public class DeviceInfoEndpoint
     {
         EntityManager mgr = getEntityManager();
         try {
-            if (containsDeviceInfo(deviceinfo)) { throw new EntityExistsException(
-                    "Object already exists"); }
+            if (containsDeviceInfo(deviceinfo)) {
+                throw new EntityExistsException("Object already exists");
+            }
             mgr.persist(deviceinfo);
         } finally {
             mgr.close();
@@ -116,12 +113,11 @@ public class DeviceInfoEndpoint
     }
 
     /**
-     * This method is used for updating an existing entity. If the entity does
-     * not exist in the datastore, an exception is thrown. It uses HTTP PUT
-     * method.
-     * 
-     * @param deviceinfo
-     *            the entity to be updated.
+     * This method is used for updating an existing entity. If the entity does not
+     * exist in the datastore, an exception is thrown.
+     * It uses HTTP PUT method.
+     *
+     * @param deviceinfo the entity to be updated.
      * @return The updated entity.
      */
     @ApiMethod(name = "updateDeviceInfo")
@@ -129,8 +125,9 @@ public class DeviceInfoEndpoint
     {
         EntityManager mgr = getEntityManager();
         try {
-            if (!containsDeviceInfo(deviceinfo)) { throw new EntityNotFoundException(
-                    "Object does not exist"); }
+            if (!containsDeviceInfo(deviceinfo)) {
+                throw new EntityNotFoundException("Object does not exist");
+            }
             mgr.persist(deviceinfo);
         } finally {
             mgr.close();
@@ -139,11 +136,10 @@ public class DeviceInfoEndpoint
     }
 
     /**
-     * This method removes the entity with primary key id. It uses HTTP DELETE
-     * method.
-     * 
-     * @param id
-     *            the primary key of the entity to be deleted.
+     * This method removes the entity with primary key id.
+     * It uses HTTP DELETE method.
+     *
+     * @param id the primary key of the entity to be deleted.
      */
     @ApiMethod(name = "removeDeviceInfo")
     public void removeDeviceInfo(@Named("id") String id)

@@ -104,7 +104,7 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "deviceinfoendpoint.getDeviceInfo" : {
+    "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo" : {
       "path" : "deviceinfo/{id}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
@@ -136,10 +136,13 @@
             "type" : "string",
             "format" : "int64"
           },
-          "deviceRegistrationID" : {
+          "deviceInformation" : {
             "type" : "string"
           },
-          "deviceInformation" : {
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "deviceRegistrationID" : {
             "type" : "string"
           }
         }

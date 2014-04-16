@@ -40,6 +40,9 @@ public class DeviceInfo
      */
     private String mDeviceInformation;
 
+    /*
+     * Phone number of the current active sim in the phone.
+     */
     private String mPhoneNumber;
 
     /*
@@ -75,5 +78,15 @@ public class DeviceInfo
     public void setTimestamp(long timestamp)
     {
         this.mTimestamp = timestamp;
+    }
+
+    public String getPhoneNumber()
+    {
+        return mPhoneNumber;
+    }
+
+    public void setPhoneNumber(String mPhoneNumber)
+    {
+        this.mPhoneNumber = mPhoneNumber;
     }
 }

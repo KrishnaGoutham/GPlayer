@@ -3,13 +3,18 @@ package com.gplayer;
 import java.util.Observable;
 import java.util.Observer;
 
+import junit.framework.Assert;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.EditText;
 
 public class NetworkManager extends Observable
 {
@@ -20,10 +25,12 @@ public class NetworkManager extends Observable
     }
 	
 	private static final String TAG = "NetworkManager";
+    private static final String PREF_KEY_PHONE_NUMBER = "key_phone_number";
     private static NetworkManager sInstance;
     private Context mAppContext;
     private boolean mIsRegestered;
     private NetworkBroadcastReceiver mReceiver;
+    private String mPhoneNumber;
 
     /**
      * Gets singleton instance of NetworkManager.
@@ -34,13 +41,13 @@ public class NetworkManager extends Observable
      * 
      * @Note: Passing non-application context can cause memory leak.
      */
-    public static boolean initInstance(Context pContext)
+    public static boolean initInstance(Context context, String phoneNumber)
     {
-    	if (pContext == null)
+    	if (context == null)
     		return false;
     	
-        if (sInstance == null && pContext != null) {
-            sInstance = new NetworkManager(pContext);
+        if (sInstance == null && context != null) {
+            sInstance = new NetworkManager(context, phoneNumber);
         } 
         
         return true;
@@ -57,11 +64,12 @@ public class NetworkManager extends Observable
     }
    
 
-	private NetworkManager(Context pContext)
+	private NetworkManager(Context context, String phoneNumber)
     {
-        mAppContext = pContext;
+        mAppContext = context;
         mIsRegestered = false;
         mReceiver = new NetworkBroadcastReceiver();
+        mPhoneNumber = phoneNumber;
     }
 
     public boolean isConnected()
@@ -138,6 +146,11 @@ public class NetworkManager extends Observable
         }
     }
     
+    public String getPhoneNumber()
+    {
+        return mPhoneNumber;
+    }
+    
     private void connectivityChanged()
     {
         Log.i (TAG, "connectivityChanged:Notifying Observers");
@@ -176,4 +189,5 @@ public class NetworkManager extends Observable
             super(pMsg);
         }
     }
+        
 }

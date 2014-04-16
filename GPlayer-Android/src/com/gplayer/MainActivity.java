@@ -7,13 +7,18 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import junit.framework.Assert;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,7 +83,7 @@ public class MainActivity extends Activity implements Observer
         setContentView(R.layout.activity_register);
             
         // Test Code
-        if (NetworkManager.initInstance(getApplicationContext())) {
+        if (NetworkManager.initInstance(getApplicationContext(), getPhoneNumber())) {
             
             NetworkManager networkManager =  NetworkManager.getInstance();
             boolean b = networkManager.isConnected();
@@ -249,7 +254,31 @@ public class MainActivity extends Activity implements Observer
         }
         curState = newState;
     }
-
+    
+    private String getPhoneNumber()
+    {
+        /*
+         * Check shared preferences for phone number. If not available try to get from
+         * API or from the user and store in preferences
+         */
+        /*SharedPreferences netwokprefs = mAppContext.getSharedPreferences(
+                "NetworkDetails", Context.MODE_PRIVATE);
+        
+        if(!netwokprefs.contains(PREF_KEY_PHONE_NUMBER)) {
+            TelephonyManager manager = (TelephonyManager) mAppContext.getSystemService(Context.TELEPHONY_SERVICE);
+            mPhoneNumber = manager.getLine1Number();
+            
+            /*Ask phone number from user*/
+          /*  if (mPhoneNumber == null) {
+                mPhoneNumber = getPhoneNumberFromUser();
+            }
+        }
+        
+        mPhoneNumber = netwokprefs.getString(PREF_KEY_PHONE_NUMBER, null);
+        Assert.assertNotNull(mPhoneNumber);*/
+        return null;
+    }
+    
     private void showDialog(String message)
     {
         new AlertDialog.Builder(this)

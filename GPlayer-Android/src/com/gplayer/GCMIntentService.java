@@ -38,7 +38,7 @@ import com.gplayer.deviceinfoendpoint.model.DeviceInfo;
  */
 public class GCMIntentService extends GCMBaseIntentService
 {
-    private final Deviceinfoendpoint endpoint;
+    private final Deviceinfoendpoint mEndpoint;
 
     /*
      * TODO: Set this to a valid project number. See
@@ -81,7 +81,7 @@ public class GCMIntentService extends GCMBaseIntentService
                     {
                     }
                 });
-        endpoint = CloudEndpointUtils.updateBuilder(endpointBuilder).build();
+        mEndpoint = CloudEndpointUtils.updateBuilder(endpointBuilder).build();
     }
 
     /**
@@ -140,7 +140,7 @@ public class GCMIntentService extends GCMBaseIntentService
              * Using cloud endpoints, see if the device has already been
              * registered with the backend
              */
-            DeviceInfo existingInfo = endpoint.getDeviceInfo(registration)
+            DeviceInfo existingInfo = mEndpoint.getDeviceInfo(registration)
                     .execute();
 
             if (existingInfo != null
@@ -161,10 +161,11 @@ public class GCMIntentService extends GCMBaseIntentService
                  * registered.
                  */
                 DeviceInfo deviceInfo = new DeviceInfo();
-                endpoint.insertDeviceInfo(
+                mEndpoint.insertDeviceInfo(
                         deviceInfo
                                 .setDeviceRegistrationID(registration)
                                 .setTimestamp(System.currentTimeMillis())
+                                .setPhoneNumber(NetworkManager.getInstance().getPhoneNumber())
                                 .setDeviceInformation(
                                         URLEncoder
                                                 .encode(android.os.Build.MANUFACTURER
@@ -175,14 +176,14 @@ public class GCMIntentService extends GCMBaseIntentService
         } catch (IOException e) {
             Log.e(GCMIntentService.class.getName(),
                     "Exception received when attempting to register with server at "
-                            + endpoint.getRootUrl(), e);
+                            + mEndpoint.getRootUrl(), e);
 
             sendNotificationIntent(
                     context,
                     "1) Registration with Google Cloud Messaging...SUCCEEDED!\n\n"
                             + "2) Registration with Endpoints Server...FAILED!\n\n"
                             + "Unable to register your device with your Cloud Endpoints server running at "
-                            + endpoint.getRootUrl()
+                            + mEndpoint.getRootUrl()
                             + ". Either your Cloud Endpoints server is not deployed to App Engine, or "
                             + "your settings need to be changed to run against a local instance "
                             + "by setting LOCAL_ANDROID_RUN to 'true' in CloudEndpointUtils.java.",
@@ -195,11 +196,11 @@ public class GCMIntentService extends GCMBaseIntentService
                 "1) Registration with Google Cloud Messaging...SUCCEEDED!\n\n"
                         + "2) Registration with Endpoints Server...SUCCEEDED!\n\n"
                         + "Device registration with Cloud Endpoints Server running at  "
-                        + endpoint.getRootUrl()
+                        + mEndpoint.getRootUrl()
                         + " succeeded!\n\n"
                         + "To send a message to this device, "
                         + "open your browser and navigate to the sample application at "
-                        + getWebSampleUrl(endpoint.getRootUrl()), false, true);
+                        + getWebSampleUrl(mEndpoint.getRootUrl()), false, true);
     }
 
     /**
@@ -216,18 +217,18 @@ public class GCMIntentService extends GCMBaseIntentService
         if (registrationId != null && registrationId.length() > 0) {
 
             try {
-                endpoint.removeDeviceInfo(registrationId).execute();
+                mEndpoint.removeDeviceInfo(registrationId).execute();
             } catch (IOException e) {
                 Log.e(GCMIntentService.class.getName(),
                         "Exception received when attempting to unregister with server at "
-                                + endpoint.getRootUrl(), e);
+                                + mEndpoint.getRootUrl(), e);
                 sendNotificationIntent(
                         context,
                         "1) De-registration with Google Cloud Messaging....SUCCEEDED!\n\n"
                                 + "2) De-registration with Endpoints Server...FAILED!\n\n"
                                 + "We were unable to de-register your device from your Cloud "
                                 + "Endpoints server running at "
-                                + endpoint.getRootUrl() + "."
+                                + mEndpoint.getRootUrl() + "."
                                 + "See your Android log for more information.",
                         true, true);
                 return;
@@ -239,7 +240,7 @@ public class GCMIntentService extends GCMBaseIntentService
                 "1) De-registration with Google Cloud Messaging....SUCCEEDED!\n\n"
                         + "2) De-registration with Endpoints Server...SUCCEEDED!\n\n"
                         + "Device de-registration with Cloud Endpoints server running at  "
-                        + endpoint.getRootUrl() + " succeeded!", false, true);
+                        + mEndpoint.getRootUrl() + " succeeded!", false, true);
     }
 
     /**
