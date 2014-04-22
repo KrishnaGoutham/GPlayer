@@ -3,18 +3,14 @@ package com.gplayer;
 import java.util.Observable;
 import java.util.Observer;
 
-import junit.framework.Assert;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.EditText;
 
 public class NetworkManager extends Observable
 {
@@ -25,7 +21,6 @@ public class NetworkManager extends Observable
     }
 	
 	private static final String TAG = "NetworkManager";
-    private static final String PREF_KEY_PHONE_NUMBER = "key_phone_number";
     private static NetworkManager sInstance;
     private Context mAppContext;
     private boolean mIsRegestered;
@@ -150,6 +145,13 @@ public class NetworkManager extends Observable
     {
         return mPhoneNumber;
     }
+    
+    public String getDeviceId()
+    {
+        TelephonyManager telephonyManager = (TelephonyManager) mAppContext.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
+    }
+    
     
     private void connectivityChanged()
     {

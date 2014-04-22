@@ -70,7 +70,12 @@ public class GCMIntentService extends GCMBaseIntentService
     {
         GCMRegistrar.unregister(mContext);
     }
-
+    
+    public static boolean isRegistered(Context mContext)
+    {
+        return GCMRegistrar.isRegistered(mContext);
+    }
+    
     public GCMIntentService()
     {
         super(PROJECT_NUMBER);
@@ -140,8 +145,8 @@ public class GCMIntentService extends GCMBaseIntentService
              * Using cloud endpoints, see if the device has already been
              * registered with the backend
              */
-            DeviceInfo existingInfo = mEndpoint.getDeviceInfo(registration)
-                    .execute();
+            DeviceInfo existingInfo = mEndpoint.deviceInfoEndpoint()
+                    .getDeviceInfo(registration).execute();
 
             if (existingInfo != null
                     && registration.equals(existingInfo
@@ -166,6 +171,7 @@ public class GCMIntentService extends GCMBaseIntentService
                                 .setDeviceRegistrationID(registration)
                                 .setTimestamp(System.currentTimeMillis())
                                 .setPhoneNumber(NetworkManager.getInstance().getPhoneNumber())
+                                .setUuid(NetworkManager.getInstance().getPhoneNumber())
                                 .setDeviceInformation(
                                         URLEncoder
                                                 .encode(android.os.Build.MANUFACTURER

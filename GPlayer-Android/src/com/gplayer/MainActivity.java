@@ -8,7 +8,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import junit.framework.Assert;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,10 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,93 +66,33 @@ public class MainActivity extends Activity implements Observer
     {
         REGISTERED, REGISTERING, UNREGISTERED, UNREGISTERING
     }
-
+    
+    static final String PREF_KEY =  "main_prefs";
+    static final String PREF_KEY_PHONE_NUMBER = "key_phone_number";
+    static final String PREF_KEY_GCM_REGISTRATION_ID = "key_gcm_registration_id";
+    
+    private static final String TAG = "MainActivity";
     private State curState = State.UNREGISTERED;
-    private OnTouchListener registerListener = null;
-    private OnTouchListener unregisterListener = null;
     private MessageEndpoint messageEndpoint = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-            
-        // Test Code
+        setContentView(R.layout.activity_register); 
+        
+        // Initialize network manager.
         if (NetworkManager.initInstance(getApplicationContext(), getPhoneNumber())) {
             
-            NetworkManager networkManager =  NetworkManager.getInstance();
-            boolean b = networkManager.isConnected();
+            NetworkManager networkManager = NetworkManager.getInstance();
             networkManager.addObserver(this);
-        }
-        
-        
-        // TODO : Register GCM if not already registered and save to local storage.
-
-        //new UploadDataTask(this).execute();
-
-        Button regButton = (Button) findViewById(R.id.regButton);
-
-        registerListener = new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        if (GCMIntentService.PROJECT_NUMBER == null
-                                || GCMIntentService.PROJECT_NUMBER.length() == 0) {
-                            showDialog("Unable to register for Google Cloud Messaging. "
-                                    + "Your application's PROJECT_NUMBER field is unset! You can change "
-                                    + "it in GCMIntentService.java");
-                        } else {
-                            updateState(State.REGISTERING);
-                            try {
-                                GCMIntentService
-                                        .register(getApplicationContext());
-                            } catch (Exception e) {
-                                Log.e(MainActivity.class.getName(),
-                                        "Exception received when attempting to register for Google Cloud "
-                                                + "Messaging. Perhaps you need to set your virtual device's "
-                                                + " target to Google APIs? "
-                                                + "See https://developers.google.com/eclipse/docs/cloud_endpoints_android"
-                                                + " for more information.", e);
-                                showDialog("There was a problem when attempting to register for "
-                                        + "Google Cloud Messaging. If you're running in the emulator, "
-                                        + "is the target of your virtual device set to 'Google APIs?' "
-                                        + "See the Android log for more details.");
-                                updateState(State.UNREGISTERED);
-                            }
-                        }
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        return true;
-                    default:
-                        return false;
-                }
+            
+            if (networkManager.isConnected()){
+                registerGCM();
             }
-        };
-
-        unregisterListener = new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        updateState(State.UNREGISTERING);
-                        GCMIntentService.unregister(getApplicationContext());
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        };
-
-        regButton.setOnTouchListener(registerListener);
-
+            
+        } 
+        
         /*
          * build the messaging endpoint so we can access old messages via an
          * endpoint call
@@ -173,6 +109,13 @@ public class MainActivity extends Activity implements Observer
                 .build();
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        NetworkManager.getInstance().deleteObserver(this);
+    }
+    
     @Override
     protected void onNewIntent(Intent intent)
     {
@@ -224,35 +167,40 @@ public class MainActivity extends Activity implements Observer
             }
         }
     }
-
+    
+  
+    private void registerGCM()
+    {
+        if (GCMIntentService.PROJECT_NUMBER == null
+                || GCMIntentService.PROJECT_NUMBER.length() == 0) {
+            showDialog("Unable to register for Google Cloud Messaging. "
+                    + "Your application's PROJECT_NUMBER field is unset! You can change "
+                    + "it in GCMIntentService.java");
+        } else if (!GCMIntentService.isRegistered(getApplicationContext())){
+            updateState(State.REGISTERING);
+            try {
+                GCMIntentService
+                        .register(getApplicationContext());
+            } catch (Exception e) {
+                Log.e(TAG,
+                        "Exception received when attempting to register for Google Cloud "
+                                + "Messaging. Perhaps you need to set your virtual device's "
+                                + " target to Google APIs? "
+                                + "See https://developers.google.com/eclipse/docs/cloud_endpoints_android"
+                                + " for more information.", e);
+                showDialog("There was a problem when attempting to register for "
+                        + "Google Cloud Messaging. If you're running in the emulator, "
+                        + "is the target of your virtual device set to 'Google APIs?' "
+                        + "See the Android log for more details.");
+                updateState(State.UNREGISTERED);
+            }
+        }
+    }
+    
     private void updateState(State newState)
     {
-        Button registerButton = (Button) findViewById(R.id.regButton);
-        switch (newState)
-        {
-            case REGISTERED:
-                registerButton.setText("Unregister");
-                registerButton.setOnTouchListener(unregisterListener);
-                registerButton.setEnabled(true);
-                break;
-
-            case REGISTERING:
-                registerButton.setText("Registering...");
-                registerButton.setEnabled(false);
-                break;
-
-            case UNREGISTERED:
-                registerButton.setText("Register");
-                registerButton.setOnTouchListener(registerListener);
-                registerButton.setEnabled(true);
-                break;
-
-            case UNREGISTERING:
-                registerButton.setText("Unregistering...");
-                registerButton.setEnabled(false);
-                break;
-        }
         curState = newState;
+        Toast.makeText(this, newState.toString(), Toast.LENGTH_LONG).show();
     }
     
     private String getPhoneNumber()
@@ -261,23 +209,44 @@ public class MainActivity extends Activity implements Observer
          * Check shared preferences for phone number. If not available try to get from
          * API or from the user and store in preferences
          */
-        /*SharedPreferences netwokprefs = mAppContext.getSharedPreferences(
-                "NetworkDetails", Context.MODE_PRIVATE);
+        String phoneNumber = null;
+        SharedPreferences netwokprefs = getSharedPreferences(
+                PREF_KEY, Context.MODE_PRIVATE);
         
         if(!netwokprefs.contains(PREF_KEY_PHONE_NUMBER)) {
-            TelephonyManager manager = (TelephonyManager) mAppContext.getSystemService(Context.TELEPHONY_SERVICE);
-            mPhoneNumber = manager.getLine1Number();
+            TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            phoneNumber = manager.getLine1Number();
             
-            /*Ask phone number from user*/
-          /*  if (mPhoneNumber == null) {
-                mPhoneNumber = getPhoneNumberFromUser();
+            //Ask phone number from user
+            if (phoneNumber == null) {
+                phoneNumber = getPhoneNumberFromUser();
             }
+            
+            //@TODO validate phone number.
+            
+            //Add phone number to local storage
+           SharedPreferences.Editor editor =  netwokprefs.edit();
+           editor.putString(PREF_KEY_PHONE_NUMBER, phoneNumber);
+           editor.commit();
         }
         
-        mPhoneNumber = netwokprefs.getString(PREF_KEY_PHONE_NUMBER, null);
-        Assert.assertNotNull(mPhoneNumber);*/
+        phoneNumber = netwokprefs.getString(PREF_KEY_PHONE_NUMBER, null);
+        Assert.assertNotNull(phoneNumber);
+        return phoneNumber;
+    }
+    
+   
+    
+    private String getPhoneNumberFromUser()
+    {
+        final EditText text = new EditText(this);
+        AlertDialog dialogue = new AlertDialog.Builder(this).create();
+        dialogue.setView(text);
+        dialogue.show();
+           
         return null;
     }
+    
     
     private void showDialog(String message)
     {
@@ -291,7 +260,20 @@ public class MainActivity extends Activity implements Observer
                             }
                         }).show();
     }
-
+    
+    @Override
+    public void update(Observable observable, Object data)
+    {
+        // TODO Auto-generated method stub
+        Boolean isConnected = (Boolean) data;
+        Log.i("Main", isConnected.toString());
+        
+        if (isConnected)
+        {
+            //registerGCM();
+        }
+    }
+    
     private class UploadDataTask extends AsyncTask<Void, String, String>
     {
 
@@ -423,11 +405,5 @@ public class MainActivity extends Activity implements Observer
         }
     }
 
-    @Override
-    public void update(Observable observable, Object data)
-    {
-        // TODO Auto-generated method stub
-        Boolean isConnected = (Boolean) data;
-        Log.i("Main", isConnected.toString());
-    }
+    
 }

@@ -44,7 +44,12 @@ public class DeviceInfo
      * Phone number of the current active sim in the phone.
      */
     private String mPhoneNumber;
-
+    
+    /*
+     * String to uniquely identify a device. 
+     */
+    private String mUUID;
+    
     /*
      * Timestamp indicating when this device registered with the application.
      */
@@ -88,5 +93,15 @@ public class DeviceInfo
     public void setPhoneNumber(String mPhoneNumber)
     {
         this.mPhoneNumber = mPhoneNumber;
+    }
+
+    public String getUUID()
+    {
+        return mUUID;
+    }
+
+    public void setUUID(String mUUID)
+    {
+        this.mUUID = mUUID;
     }
 }
