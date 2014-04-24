@@ -144,6 +144,9 @@
           },
           "deviceRegistrationID" : {
             "type" : "string"
+          },
+          "uuid" : {
+            "type" : "string"
           }
         }
       },

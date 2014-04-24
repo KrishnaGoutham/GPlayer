@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/LQNNnUCq5yrCmbQS-OfQsRDAavo\"",
+ "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/JMKA8c_Ef6ClULGdrAd05TDtLeY\"",
  "discoveryVersion": "v1",
  "id": "deviceinfoendpoint:v1",
  "name": "deviceinfoendpoint",
@@ -102,13 +102,16 @@
     "timestamp": {
      "type": "string",
      "format": "int64"
+    },
+    "uuid": {
+     "type": "string"
     }
    }
   }
  },
  "methods": {
-  "deviceinfoendpoint.getDeviceInfo": {
-   "id": "deviceinfoendpoint.getDeviceInfo",
+  "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo": {
+   "id": "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo",
    "allowGet": true,
    "parameters": {
     "id": {

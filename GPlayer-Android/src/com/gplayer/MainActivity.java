@@ -270,7 +270,7 @@ public class MainActivity extends Activity implements Observer
         
         if (isConnected)
         {
-            //registerGCM();
+            registerGCM();
         }
     }
     

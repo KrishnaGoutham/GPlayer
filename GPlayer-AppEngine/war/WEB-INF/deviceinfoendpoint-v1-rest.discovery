@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/LQNNnUCq5yrCmbQS-OfQsRDAavo\"",
+ "etag": "\"IneSQDZRISaU6plvxbhHIOAs-WY/JMKA8c_Ef6ClULGdrAd05TDtLeY\"",
  "discoveryVersion": "v1",
  "id": "deviceinfoendpoint:v1",
  "name": "deviceinfoendpoint",
@@ -104,32 +104,14 @@
     "timestamp": {
      "type": "string",
      "format": "int64"
+    },
+    "uuid": {
+     "type": "string"
     }
    }
   }
  },
  "methods": {
-  "getDeviceInfo": {
-   "id": "deviceinfoendpoint.getDeviceInfo",
-   "path": "deviceinfo/{id}",
-   "httpMethod": "GET",
-   "parameters": {
-    "id": {
-     "type": "string",
-     "required": true,
-     "location": "path"
-    }
-   },
-   "parameterOrder": [
-    "id"
-   ],
-   "response": {
-    "$ref": "DeviceInfo"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "insertDeviceInfo": {
    "id": "deviceinfoendpoint.insertDeviceInfo",
    "path": "deviceinfo",
@@ -199,6 +181,33 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "deviceInfoEndpoint": {
+   "methods": {
+    "getDeviceInfo": {
+     "id": "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo",
+     "path": "deviceinfo/{id}",
+     "httpMethod": "GET",
+     "parameters": {
+      "id": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "id"
+     ],
+     "response": {
+      "$ref": "DeviceInfo"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }
