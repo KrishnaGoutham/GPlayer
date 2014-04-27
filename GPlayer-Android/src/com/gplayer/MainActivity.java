@@ -319,6 +319,8 @@ public class MainActivity extends Activity implements Observer
                         p.setDataSource(in.getFD());
                         p.prepare();
                         p.start();
+                        
+                        in.close();
 
                     } catch (IllegalArgumentException e) {
                         // TODO Auto-generated catch block
@@ -335,7 +337,7 @@ public class MainActivity extends Activity implements Observer
                     }
                 } catch (IOException e) {
 
-                }
+                } 
 
             }
 

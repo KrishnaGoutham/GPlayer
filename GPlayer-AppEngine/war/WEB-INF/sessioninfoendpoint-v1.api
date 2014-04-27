@@ -1,0 +1,114 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://myapp.appspot.com/_ah/api",
+  "name" : "sessioninfoendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "gplayer.com",
+  "ownerName" : "gplayer.com",
+  "methods" : {
+    "sessioninfoendpoint.getClientSessionData" : {
+      "path" : "clientsessiondata/{sessionId}/{clientId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.gplayer.SessionInfoEndpoint.getClientSessionData",
+      "request" : {
+        "parameters" : {
+          "sessionId" : {
+            "type" : "string",
+            "required" : true
+          },
+          "clientId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "ClientSessionData" : {
+        "id" : "ClientSessionData",
+        "type" : "object",
+        "properties" : {
+          "currentSong" : {
+            "type" : "integer"
+          },
+          "diffList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Song"
+            }
+          }
+        }
+      },
+      "Song" : {
+        "id" : "Song",
+        "type" : "object",
+        "properties" : {
+          "length" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "artist" : {
+            "type" : "string"
+          },
+          "album" : {
+            "type" : "string"
+          },
+          "blobKey" : {
+            "type" : "string"
+          },
+          "songType" : {
+            "$ref" : "Type"
+          },
+          "songInBlobStore" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Type" : {
+        "id" : "Type",
+        "type" : "string",
+        "enum" : [ "AUDIO", "VIDEO" ]
+      }
+    },
+    "methods" : {
+      "com.gplayer.SessionInfoEndpoint.getClientSessionData" : {
+        "response" : {
+          "$ref" : "ClientSessionData"
+        }
+      }
+    }
+  }
+}

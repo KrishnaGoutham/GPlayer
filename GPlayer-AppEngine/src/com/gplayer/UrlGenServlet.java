@@ -22,7 +22,6 @@ public class UrlGenServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-
         // Create a URL for blobstore and return.
         String postUrl = mblobStoreService.createUploadUrl(SUCCESS_PATH);
 
@@ -32,5 +31,4 @@ public class UrlGenServlet extends HttpServlet
         // Send the client the upload url.
         resp.getWriter().write(response);
     }
-
 }

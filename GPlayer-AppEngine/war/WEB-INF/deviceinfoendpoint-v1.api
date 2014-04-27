@@ -136,16 +136,16 @@
             "type" : "string",
             "format" : "int64"
           },
-          "deviceInformation" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
+          "uuid" : {
             "type" : "string"
           },
           "deviceRegistrationID" : {
             "type" : "string"
           },
-          "uuid" : {
+          "deviceInformation" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
             "type" : "string"
           }
         }
