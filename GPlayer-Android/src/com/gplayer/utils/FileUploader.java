@@ -1,4 +1,4 @@
-package com.gplayer;
+package com.gplayer.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+
+import com.gplayer.BuildConfig;
+
 import edu.gvsu.cis.masl.channelAPI.XHR;
 
 public class FileUploader
@@ -24,18 +27,19 @@ public class FileUploader
 
     private static final String TAG = FileUploader.class.getName();
     private HttpClient mClient;
+    private String mServerURL;
 
-    public FileUploader()
+    public FileUploader(String serverURL)
     {
         mClient = new DefaultHttpClient();
+        mServerURL = serverURL; 
     }
+   
 
     private String getUploadUrl()
     {
         String uploadUrl = null;
-        HttpGet httpGet = new HttpGet(
-                CloudEndpointUtils.LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID
-                        + "/_ah/getuploadurl/");
+        HttpGet httpGet = new HttpGet(mServerURL + "/_ah/getuploadurl/");
         mClient = new DefaultHttpClient();
 
         try {

@@ -1,4 +1,4 @@
-package com.gplayer;
+package com.gplayer.backend;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -13,9 +13,10 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.jackson.JacksonFactory;
-
+import com.gplayer.activites.MainActivity;
 import com.gplayer.deviceinfoendpoint.Deviceinfoendpoint;
 import com.gplayer.deviceinfoendpoint.model.DeviceInfo;
+import com.gplayer.utils.NetworkManager;
 
 /**
  * This class is started up as a service of the Android application. It listens
@@ -45,7 +46,7 @@ public class GCMIntentService extends GCMBaseIntentService
      * http://developers.google.com/eclipse/docs/cloud_endpoints for more
      * information.
      */
-    protected static final String PROJECT_NUMBER = "900176715464";
+    public static final String PROJECT_NUMBER = "900176715464";
 
     /**
      * Register the device for GCM.
@@ -171,7 +172,7 @@ public class GCMIntentService extends GCMBaseIntentService
                                 .setDeviceRegistrationID(registration)
                                 .setTimestamp(System.currentTimeMillis())
                                 .setPhoneNumber(NetworkManager.getInstance().getPhoneNumber())
-                                .setUuid(NetworkManager.getInstance().getPhoneNumber())
+                                .setUuid(NetworkManager.getInstance().getDeviceId())
                                 .setDeviceInformation(
                                         URLEncoder
                                                 .encode(android.os.Build.MANUFACTURER

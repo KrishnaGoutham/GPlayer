@@ -1,4 +1,4 @@
-package com.gplayer;
+package com.gplayer.backend;
 
 import java.util.HashMap;
 import java.util.Map;

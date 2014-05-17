@@ -1,4 +1,4 @@
-package com.gplayer;
+package com.gplayer.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,19 +16,25 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.util.Log;
 
 import com.google.api.client.util.IOUtils;
+import com.gplayer.BuildConfig;
 
 public class FileDownloader
 {
 
     private static final String TAG = FileDownloader.class.getName();
-    private static final String DOWNLOAD_URL = CloudEndpointUtils.LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID
-            + "/_ah/download";
-
+    private static final String DOWNLOAD_PATH = "/_ah/download";
+    private String mServerURL;
+    
+    public FileDownloader(String serverURL)
+    {
+        mServerURL = serverURL;
+    }
+    
     private HttpResponse sendRequest(String pKey) throws IOException
     {
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(DOWNLOAD_URL);
+        HttpPost post = new HttpPost(mServerURL + DOWNLOAD_PATH);
         HttpResponse response = null;
 
         try {

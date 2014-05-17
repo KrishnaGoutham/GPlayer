@@ -1,4 +1,4 @@
-package com.gplayer;
+package com.gplayer.utils;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -7,10 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import com.gplayer.BaseActivity;
 
 public class NetworkManager extends Observable
 {
@@ -36,13 +39,13 @@ public class NetworkManager extends Observable
      * 
      * @Note: Passing non-application context can cause memory leak.
      */
-    public static boolean initInstance(Context context, String phoneNumber)
+    public static boolean initInstance(Context context)
     {
     	if (context == null)
     		return false;
     	
         if (sInstance == null && context != null) {
-            sInstance = new NetworkManager(context, phoneNumber);
+            sInstance = new NetworkManager(context);
         } 
         
         return true;
@@ -59,12 +62,12 @@ public class NetworkManager extends Observable
     }
    
 
-	private NetworkManager(Context context, String phoneNumber)
+	private NetworkManager(Context context)
     {
         mAppContext = context;
         mIsRegestered = false;
         mReceiver = new NetworkBroadcastReceiver();
-        mPhoneNumber = phoneNumber;
+        mPhoneNumber = retrievePhoneNumber();
     }
 
     public boolean isConnected()
@@ -141,11 +144,6 @@ public class NetworkManager extends Observable
         }
     }
     
-    public String getPhoneNumber()
-    {
-        return mPhoneNumber;
-    }
-    
     public String getDeviceId()
     {
         TelephonyManager telephonyManager = (TelephonyManager) mAppContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -168,6 +166,35 @@ public class NetworkManager extends Observable
     private void unregisterForNetworkChange()
     {
         mAppContext.unregisterReceiver(mReceiver);
+    }
+    
+    public String getPhoneNumber()
+    {
+        return mPhoneNumber;
+    }
+    
+    private String retrievePhoneNumber()
+    {
+        /*
+         * Check shared preferences for phone number. If not available try to get from
+         * API or from the user and store in preferences
+         */
+        String phoneNumber = null;
+        SharedPreferences netwokprefs = mAppContext.getSharedPreferences(
+                BaseActivity.PREF_KEY, Context.MODE_PRIVATE);
+        
+        if(!netwokprefs.contains(BaseActivity.PREF_KEY_PHONE_NUMBER)) {
+            TelephonyManager manager = (TelephonyManager) mAppContext.getSystemService(Context.TELEPHONY_SERVICE);
+            phoneNumber = manager.getLine1Number();
+            
+            //Add phone number to local storage
+           SharedPreferences.Editor editor =  netwokprefs.edit();
+           editor.putString(BaseActivity.PREF_KEY_PHONE_NUMBER, phoneNumber);
+           editor.commit();
+        }
+        
+        phoneNumber = netwokprefs.getString(BaseActivity.PREF_KEY_PHONE_NUMBER, null);
+        return phoneNumber;
     }
     
     private class NetworkBroadcastReceiver extends BroadcastReceiver
