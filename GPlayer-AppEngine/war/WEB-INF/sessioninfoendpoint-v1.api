@@ -58,14 +58,14 @@
         "id" : "ClientSessionData",
         "type" : "object",
         "properties" : {
-          "currentSong" : {
-            "type" : "integer"
-          },
           "diffList" : {
             "type" : "array",
             "items" : {
               "$ref" : "Song"
             }
+          },
+          "currentSong" : {
+            "type" : "integer"
           }
         }
       },
@@ -83,14 +83,14 @@
           "artist" : {
             "type" : "string"
           },
+          "songType" : {
+            "$ref" : "Type"
+          },
           "album" : {
             "type" : "string"
           },
           "blobKey" : {
             "type" : "string"
-          },
-          "songType" : {
-            "$ref" : "Type"
           },
           "songInBlobStore" : {
             "type" : "boolean"

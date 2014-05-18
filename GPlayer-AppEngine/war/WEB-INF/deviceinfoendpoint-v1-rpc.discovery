@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"ADiYQGKhdYR9rpbhIFHih-UBYRs/JMKA8c_Ef6ClULGdrAd05TDtLeY\"",
+ "etag": "\"0NZZm4UuLZgEQBhMTwnFS1XIMrM/FUXO8wY8_hwwjf7Xp7xX9ytOUIA\"",
  "discoveryVersion": "v1",
  "id": "deviceinfoendpoint:v1",
  "name": "deviceinfoendpoint",
@@ -110,8 +110,27 @@
   }
  },
  "methods": {
-  "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo": {
-   "id": "deviceinfoendpoint.deviceInfoEndpoint.getDeviceInfo",
+  "deviceinfoendpoint.getDeviceInfo": {
+   "id": "deviceinfoendpoint.getDeviceInfo",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "DeviceInfo"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "deviceinfoendpoint.getDeviceInfoByDeviceId": {
+   "id": "deviceinfoendpoint.getDeviceInfoByDeviceId",
    "allowGet": true,
    "parameters": {
     "id": {

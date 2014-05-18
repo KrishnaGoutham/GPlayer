@@ -1,7 +1,6 @@
 package com.gplayer;
 
 import com.gplayer.EMF;
-
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -77,6 +76,7 @@ public class DeviceInfoEndpoint
      * @param id the primary key of the java bean.
      * @return The entity with primary key id.
      */
+    @ApiMethod(name = "getDeviceInfo")
     public DeviceInfo getDeviceInfo(@Named("id") String id)
     {
         EntityManager mgr = getEntityManager();
@@ -87,6 +87,32 @@ public class DeviceInfoEndpoint
             mgr.close();
         }
         return deviceinfo;
+    }
+    
+    /**
+     * This method gets the entity having DeviceInfo.mUuid as uuid. it uses HTTP GET Method.
+     * @param uuid the uuid of the DeviceInfo we are searching for.
+     * @return The entity with UUID that equals uuid else null.
+     */
+    @SuppressWarnings("unchecked")
+    @ApiMethod(name = "getDeviceInfoByDeviceId", path="getById")
+    public DeviceInfo getDeviceInfoByDeviceId(@Named("id") String uuid)
+    {
+        EntityManager mgr = getEntityManager();
+        DeviceInfo deviceInfo = null;
+        
+        try {
+            // check based on Device ID.
+            Query query = mgr.createQuery("select * from DeviceInfo as DeviceInfo where mUUID= '" + uuid +"'");
+            List<DeviceInfo> list =  (List<DeviceInfo>) query.getResultList();
+            
+            if (list.size() > 0)
+                deviceInfo = list.get(0);
+        
+        } finally {
+            mgr.close();
+        }
+        return deviceInfo;
     }
 
     /**

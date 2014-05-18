@@ -147,13 +147,28 @@ public class GCMIntentService extends GCMBaseIntentService
              * Using cloud endpoints, see if the device has already been
              * registered with the backend
              */
-            DeviceInfo existingInfo = mEndpoint.deviceInfoEndpoint()
-                    .getDeviceInfo(registration).execute();
+            DeviceInfo existingInfo = mEndpoint.getDeviceInfo(registration)
+                    .execute();
 
             if (existingInfo != null
                     && registration.equals(existingInfo
                             .getDeviceRegistrationID())) {
                 alreadyRegisteredWithEndpointServer = true;
+            }else {
+                
+                /*
+                 * check with backend if this device is registered with another GCM id.
+                 * If so just update the GCM Id.
+                 */
+               existingInfo =  mEndpoint.getDeviceInfoByDeviceId
+                       (NetworkManager.getInstance().getDeviceId()).execute();
+               
+               if (existingInfo != null)
+               {
+                   existingInfo.setDeviceRegistrationID(registration);
+                   mEndpoint.updateDeviceInfo(existingInfo).execute();
+                   alreadyRegisteredWithEndpointServer = true;
+               }
             }
         } catch (IOException e) {
             // Ignore
