@@ -5,14 +5,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -29,54 +35,59 @@ import com.gplayer.messageEndpoint.model.MessageData;
 import com.gplayer.utils.FileDownloader;
 import com.gplayer.utils.FileUploader;
 
-/**
- * An activity that communicates with your App Engine backend via Cloud
- * Endpoints.
- * 
- * When the user hits the "Register" button, a message is sent to the backend
- * (over endpoints) indicating that the device would like to receive broadcast
- * messages from it. Clicking "Register" also has the effect of registering this
- * device for Google Cloud Messaging (GCM). Whenever the backend wants to
- * broadcast a message, it does it via GCM, so that the device does not need to
- * keep polling the backend for messages.
- * 
- * If you've generated an App Engine backend for an existing Android project,
- * this activity will not be hooked in to your main activity as yet. You can
- * easily do so by adding the following lines to your main activity:
- * 
- * Intent intent = new Intent(this, RegisterActivity.class);
- * startActivity(intent);
- * 
- * To make the sample run, you need to set your PROJECT_NUMBER in
- * GCMIntentService.java. If you're going to be running a local version of the
- * App Engine backend (using the DevAppServer), you'll need to toggle the
- * LOCAL_ANDROID_RUN flag in CloudEndpointUtils.java. See the javadoc in these
- * classes for more details.
- * 
- * For a comprehensive walkthrough, check out the documentation at
- * http://developers.google.com/eclipse/docs/cloud_endpoints
- */
-public class MainActivity extends BaseActivity
-{
 
-    enum State
-    {
-        REGISTERED, REGISTERING, UNREGISTERED, UNREGISTERING
-    }
-    
-    static final String PREF_KEY =  "main_prefs";
-    static final String PREF_KEY_PHONE_NUMBER = "key_phone_number";
-    static final String PREF_KEY_GCM_REGISTRATION_ID = "key_gcm_registration_id";
-    
+public class MainActivity extends BaseActivity implements ActionBar.TabListener
+{
     private static final String TAG = "MainActivity";
     
     private MessageEndpoint messageEndpoint = null;
-
+    private TabSelectionPageAdapter mSelectionPageAdapter; 
+    private ViewPager mViewPager;
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register); 
+        setContentView(R.layout.activity_main); 
+        
+        // Create the adapter that will return a fragment for each of the three primary sections
+        // of the app.
+        mSelectionPageAdapter = new TabSelectionPageAdapter(getSupportFragmentManager());
+        
+     // Set up the action bar.
+        final ActionBar actionBar = getActionBar();
+
+        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+        // parent.
+        actionBar.setHomeButtonEnabled(false);
+
+        // Specify that we will be displaying tabs in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+        // user swipes between sections.
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSelectionPageAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between different app sections, select the corresponding tab.
+                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                // Tab.
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
+
+        // For each of the sections in the app, add a tab to the action bar.
+        for (int i = 0; i < mSelectionPageAdapter.getCount(); i++) {
+            // Create a tab with text corresponding to the page title defined by the adapter.
+            // Also specify this Activity object, which implements the TabListener interface, as the
+            // listener for when this tab is selected.
+            actionBar.addTab(
+                    actionBar.newTab()
+                            .setText(mSelectionPageAdapter.getPageTitle(i))
+                            .setTabListener(this));
+        }
         
         /*
          * build the messaging endpoint so we can access old messages via an
@@ -92,6 +103,23 @@ public class MainActivity extends BaseActivity
 
         messageEndpoint = CloudEndpointUtils.updateBuilder(endpointBuilder)
                 .build();
+    }
+    
+    @Override
+    public void onTabReselected(Tab arg0, FragmentTransaction arg1)
+    {
+    }
+
+    @Override
+    public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction)
+    {
+        // When the given tab is selected, switch to the corresponding page in the ViewPager.
+        mViewPager.setCurrentItem(tab.getPosition()); 
+    }
+
+    @Override
+    public void onTabUnselected(Tab arg0, FragmentTransaction arg1)
+    {
     }
     
     private String getPhoneNumberFromUser()
@@ -153,16 +181,12 @@ public class MainActivity extends BaseActivity
                         in.close();
 
                     } catch (IllegalArgumentException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (SecurityException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (IllegalStateException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 } catch (IOException e) {
@@ -227,15 +251,70 @@ public class MainActivity extends BaseActivity
                         + "the endpoint at " + messageEndpoint.getBaseUrl()
                         + ", check log for details");
             } else {
-                TextView messageView = (TextView) findViewById(R.id.msgView);
-                messageView.setText("Last 5 Messages read from "
-                        + messageEndpoint.getBaseUrl() + ":\n");
+                String messageView;
+                
+                messageView = "Last 5 Messages read from "
+                        + messageEndpoint.getBaseUrl() + ":\n";
                 for (MessageData message : messages.getItems()) {
-                    messageView.append(message.getMessage() + "\n");
+                    messageView.concat(message.getMessage() + "\n");
                 }
             }
         }
     }
 
+    public static class TabSelectionPageAdapter extends FragmentPagerAdapter
+    {
+
+        static final int TAB_CONTACTS = 0;
+        static final int TAB_SONGS = 1;
+        static final int TAB_PLAYER = 2;
+        static final int TAB_COUNT = 3; 
+        
+        private static final String mPageTitles[] = {
+            "Contacts",
+            "Songs",
+            "Player"
+        }; 
+        
+        public TabSelectionPageAdapter(FragmentManager fm)
+        {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int pos)
+        {
+            Fragment fragment = null;
+            fragment = new ContactlistFragment();
+            /*switch(pos)
+            {
+                case TAB_CONTACTS:
+                    fragment = new ContactlistFragment();
+                    break;
+                case TAB_SONGS:
+                    fragment = new SongsFragment();
+                    break;
+                case TAB_PLAYER:
+                    fragment = new PlayerFragment();
+                    break;
+                default:
+                    break;
+            }*/
+            return fragment;
+        }
+
+        @Override
+        public int getCount()
+        {
+            return TAB_COUNT;
+        }
+        
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
+            return mPageTitles[position];
+        }
+        
+    }
     
 }

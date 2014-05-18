@@ -8,13 +8,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.gplayer.backend.GCMIntentService;
 import com.gplayer.utils.NetworkManager;
 
-public class BaseActivity extends Activity implements Observer
+public abstract class BaseActivity extends FragmentActivity implements Observer
 {
 
     protected enum State
@@ -26,7 +27,7 @@ public class BaseActivity extends Activity implements Observer
     public static final String PREF_KEY_PHONE_NUMBER = "key_phone_number";
     public static final String PREF_KEY_GCM_REGISTRATION_ID = "key_gcm_registration_id";
     
-    protected State curState = State.UNREGISTERED;
+    protected State mCurState = State.UNREGISTERED;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -76,7 +77,7 @@ public class BaseActivity extends Activity implements Observer
                      * of unregistering, then we move back to the registered
                      * state.
                      */
-                    if (curState == State.REGISTERING) {
+                    if (mCurState == State.REGISTERING) {
                         updateState(State.UNREGISTERED);
                     } else {
                         updateState(State.REGISTERED);
@@ -89,7 +90,7 @@ public class BaseActivity extends Activity implements Observer
                      * unregistering, the we move back to the unregistered
                      * state.
                      */
-                    if (curState == State.REGISTERING) {
+                    if (mCurState == State.REGISTERING) {
                         updateState(State.REGISTERED);
                     } else {
                         updateState(State.UNREGISTERED);
@@ -130,7 +131,7 @@ public class BaseActivity extends Activity implements Observer
     
     private void updateState(State newState)
     {
-        curState = newState;
+        mCurState = newState;
         Toast.makeText(this, newState.toString(), Toast.LENGTH_LONG).show();
     }
     
