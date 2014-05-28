@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/deviceinfoendpoint/v1/20140518142441/java/1.16.0-rc/gplayer.com-deviceinfoendpoint-v1-20140518142441-java-1.16.0-rc-sources.jar", 
-      "path": "gplayer.com-deviceinfoendpoint-v1-20140518142441-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/deviceinfoendpoint/v1/20140525165904/java/1.16.0-rc/gplayer.com-deviceinfoendpoint-v1-20140525165904-java-1.16.0-rc-sources.jar", 
+      "path": "gplayer.com-deviceinfoendpoint-v1-20140525165904-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2014-05-18 14:24"
+      "timestamp": "2014-05-25 16:59"
     }, 
     {
-      "path": "gplayer.com-deviceinfoendpoint-v1-20140518142441-java-1.16.0-rc.jar.properties", 
+      "path": "gplayer.com-deviceinfoendpoint-v1-20140525165904-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -701,5 +701,5 @@
   "version": "v1", 
   "language_version": "1.16.0-rc", 
   "id": "deviceinfoendpoint:v1", 
-  "revision": 20140518142441
+  "revision": 20140525165904
 }

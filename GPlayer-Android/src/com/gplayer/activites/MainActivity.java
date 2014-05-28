@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,9 @@ import com.gplayer.utils.FileDownloader;
 import com.gplayer.utils.FileUploader;
 
 
-public class MainActivity extends BaseActivity implements ActionBar.TabListener
+public class MainActivity extends BaseActivity implements
+        ActionBar.TabListener,
+        ContactsListFragment.OnContactsInteractionListener
 {
     private static final String TAG = "MainActivity";
     
@@ -54,12 +57,12 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener
         // of the app.
         mSelectionPageAdapter = new TabSelectionPageAdapter(getSupportFragmentManager());
         
-     // Set up the action bar.
+        // Set up the action bar.
         final ActionBar actionBar = getActionBar();
 
         // Specify that the Home/Up button should not be enabled, since there is no hierarchical
         // parent.
-        actionBar.setHomeButtonEnabled(false);
+        //actionBar.setHomeButtonEnabled(false);
 
         // Specify that we will be displaying tabs in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -285,7 +288,7 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener
         public Fragment getItem(int pos)
         {
             Fragment fragment = null;
-            fragment = new ContactlistFragment();
+            fragment = new ContactsListFragment();
             /*switch(pos)
             {
                 case TAB_CONTACTS:
@@ -314,6 +317,20 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener
         {
             return mPageTitles[position];
         }
+        
+    }
+
+    @Override
+    public void onContactSelected(Uri contactUri)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onSelectionCleared()
+    {
+        // TODO Auto-generated method stub
         
     }
     

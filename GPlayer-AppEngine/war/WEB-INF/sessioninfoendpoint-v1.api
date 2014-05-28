@@ -80,8 +80,8 @@
           "title" : {
             "type" : "string"
           },
-          "artist" : {
-            "type" : "string"
+          "songInBlobStore" : {
+            "type" : "boolean"
           },
           "songType" : {
             "$ref" : "Type"
@@ -92,8 +92,8 @@
           "blobKey" : {
             "type" : "string"
           },
-          "songInBlobStore" : {
-            "type" : "boolean"
+          "artist" : {
+            "type" : "string"
           }
         }
       },

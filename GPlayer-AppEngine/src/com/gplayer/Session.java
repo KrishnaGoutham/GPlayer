@@ -58,13 +58,13 @@ import java.util.UUID;
         return mGuests;
     }
     
-    public Client getGuest(String clientUUID)
+    public Client getGuest(String mClientPhoneNum)
     {
         Client guest = null;
         
         for (Client client : mGuests)
         {
-            if(client.getClientUUID().equals(clientUUID))
+            if(client.getClientPhoneNum().equals(mClientPhoneNum))
             {
                 guest = client;
                 break;
@@ -118,22 +118,10 @@ import java.util.UUID;
     }
 
     class Client
-    {
-        private String mClientId;
-        private String mClientUUID;
+    {        
         private String mClientPhoneNum;
         private String mClientGCMID;
         private int    mLastSyncdPlaylistIndex;
-
-        public String getClientId()
-        {
-            return mClientId;
-        }
-
-        public String getClientUUID()
-        {
-            return mClientUUID;
-        }
 
         public String getClientPhoneNum()
         {

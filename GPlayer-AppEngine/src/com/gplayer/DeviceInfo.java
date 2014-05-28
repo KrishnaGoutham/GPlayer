@@ -3,6 +3,9 @@ package com.gplayer;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.google.appengine.api.datastore.PhoneNumber;
+import com.google.appengine.api.datastore.Text;
+
 /**
  * An entity for Android device information.
  * 
@@ -38,12 +41,12 @@ public class DeviceInfo
      * Some identifying information about the device, such as its manufacturer
      * and product name.
      */
-    private String mDeviceInformation;
+    private Text mDeviceInformation;
 
     /*
      * Phone number of the current active sim in the phone.
      */
-    private String mPhoneNumber;
+    private PhoneNumber mPhoneNumber;
     
     /*
      * String to uniquely identify a device. 
@@ -60,7 +63,7 @@ public class DeviceInfo
         return mDeviceRegistrationID;
     }
 
-    public String getDeviceInformation()
+    public Text getDeviceInformation()
     {
         return this.mDeviceInformation;
     }
@@ -70,7 +73,7 @@ public class DeviceInfo
         this.mDeviceRegistrationID = deviceRegistrationID;
     }
 
-    public void setDeviceInformation(String deviceInformation)
+    public void setDeviceInformation(Text deviceInformation)
     {
         this.mDeviceInformation = deviceInformation;
     }
@@ -85,14 +88,14 @@ public class DeviceInfo
         this.mTimestamp = timestamp;
     }
 
-    public String getPhoneNumber()
+    public PhoneNumber getPhoneNumber()
     {
         return mPhoneNumber;
     }
 
-    public void setPhoneNumber(String mPhoneNumber)
+    public void setPhoneNumber(PhoneNumber phoneNumber)
     {
-        this.mPhoneNumber = mPhoneNumber;
+        this.mPhoneNumber = phoneNumber;
     }
 
     public String getUUID()

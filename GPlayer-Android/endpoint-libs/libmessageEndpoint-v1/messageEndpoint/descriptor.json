@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/messageEndpoint/v1/20140518142422/java/1.16.0-rc/gplayer.com-messageEndpoint-v1-20140518142422-java-1.16.0-rc-sources.jar", 
-      "path": "gplayer.com-messageEndpoint-v1-20140518142422-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/messageEndpoint/v1/20140525165705/java/1.16.0-rc/gplayer.com-messageEndpoint-v1-20140525165705-java-1.16.0-rc-sources.jar", 
+      "path": "gplayer.com-messageEndpoint-v1-20140525165705-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2014-05-18 14:24"
+      "timestamp": "2014-05-25 16:57"
     }, 
     {
-      "path": "gplayer.com-messageEndpoint-v1-20140518142422-java-1.16.0-rc.jar.properties", 
+      "path": "gplayer.com-messageEndpoint-v1-20140525165705-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -701,5 +701,5 @@
   "version": "v1", 
   "language_version": "1.16.0-rc", 
   "id": "messageEndpoint:v1", 
-  "revision": 20140518142422
+  "revision": 20140525165705
 }
