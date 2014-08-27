@@ -41,12 +41,12 @@ public class DeviceInfo
      * Some identifying information about the device, such as its manufacturer
      * and product name.
      */
-    private Text mDeviceInformation;
+    private String mDeviceInformation;
 
     /*
      * Phone number of the current active sim in the phone.
      */
-    private PhoneNumber mPhoneNumber;
+    private String mPhoneNumber;
     
     /*
      * String to uniquely identify a device. 
@@ -63,7 +63,7 @@ public class DeviceInfo
         return mDeviceRegistrationID;
     }
 
-    public Text getDeviceInformation()
+    public String getDeviceInformation()
     {
         return this.mDeviceInformation;
     }
@@ -73,7 +73,7 @@ public class DeviceInfo
         this.mDeviceRegistrationID = deviceRegistrationID;
     }
 
-    public void setDeviceInformation(Text deviceInformation)
+    public void setDeviceInformation(String deviceInformation)
     {
         this.mDeviceInformation = deviceInformation;
     }
@@ -88,12 +88,12 @@ public class DeviceInfo
         this.mTimestamp = timestamp;
     }
 
-    public PhoneNumber getPhoneNumber()
+    public String getPhoneNumber()
     {
-        return mPhoneNumber;
+        return mPhoneNumber.toString();
     }
 
-    public void setPhoneNumber(PhoneNumber phoneNumber)
+    public void setPhoneNumber(String phoneNumber)
     {
         this.mPhoneNumber = phoneNumber;
     }

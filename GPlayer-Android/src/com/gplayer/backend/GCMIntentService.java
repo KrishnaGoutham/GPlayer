@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -13,7 +12,7 @@ import com.google.android.gcm.GCMRegistrar;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.gplayer.activites.MainActivity;
 import com.gplayer.deviceinfoendpoint.Deviceinfoendpoint;
 import com.gplayer.deviceinfoendpoint.model.DeviceInfo;

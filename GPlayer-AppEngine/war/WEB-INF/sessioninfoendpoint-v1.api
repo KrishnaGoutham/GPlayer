@@ -80,12 +80,6 @@
           "title" : {
             "type" : "string"
           },
-          "songInBlobStore" : {
-            "type" : "boolean"
-          },
-          "songType" : {
-            "$ref" : "Type"
-          },
           "album" : {
             "type" : "string"
           },
@@ -94,6 +88,12 @@
           },
           "artist" : {
             "type" : "string"
+          },
+          "songType" : {
+            "$ref" : "Type"
+          },
+          "songInBlobStore" : {
+            "type" : "boolean"
           }
         }
       },

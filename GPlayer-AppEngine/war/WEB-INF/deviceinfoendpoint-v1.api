@@ -172,34 +172,16 @@
             "type" : "string",
             "format" : "int64"
           },
-          "deviceRegistrationID" : {
-            "type" : "string"
-          },
           "uuid" : {
             "type" : "string"
           },
           "deviceInformation" : {
-            "$ref" : "Text"
+            "type" : "string"
           },
           "phoneNumber" : {
-            "$ref" : "PhoneNumber"
-          }
-        }
-      },
-      "Text" : {
-        "id" : "Text",
-        "type" : "object",
-        "properties" : {
-          "value" : {
             "type" : "string"
-          }
-        }
-      },
-      "PhoneNumber" : {
-        "id" : "PhoneNumber",
-        "type" : "object",
-        "properties" : {
-          "number" : {
+          },
+          "deviceRegistrationID" : {
             "type" : "string"
           }
         }

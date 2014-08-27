@@ -132,12 +132,12 @@
         "id" : "UserInfo",
         "type" : "object",
         "properties" : {
+          "phoneNumber" : {
+            "$ref" : "PhoneNumber"
+          },
           "lastSeenTime" : {
             "type" : "string",
             "format" : "date-time"
-          },
-          "phoneNumber" : {
-            "$ref" : "PhoneNumber"
           }
         }
       },
