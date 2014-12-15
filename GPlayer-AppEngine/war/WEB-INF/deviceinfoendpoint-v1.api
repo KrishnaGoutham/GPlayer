@@ -175,13 +175,13 @@
           "uuid" : {
             "type" : "string"
           },
-          "deviceInformation" : {
+          "deviceRegistrationID" : {
             "type" : "string"
           },
           "phoneNumber" : {
             "type" : "string"
           },
-          "deviceRegistrationID" : {
+          "deviceInformation" : {
             "type" : "string"
           }
         }

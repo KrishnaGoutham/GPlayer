@@ -88,6 +88,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "userinfoendpoint.updateUserInfo" : {
+      "path" : "userinfo",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.gplayer.UserInfoEndpoint.updateUserInfo",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "userinfoendpoint.removeUserInfo" : {
       "path" : "userinfo/{id}",
       "httpMethod" : "DELETE",
@@ -108,22 +124,6 @@
       "response" : {
         "body" : "empty"
       }
-    },
-    "userinfoendpoint.updateUserInfo" : {
-      "path" : "userinfo",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.gplayer.UserInfoEndpoint.updateUserInfo",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
@@ -132,12 +132,12 @@
         "id" : "UserInfo",
         "type" : "object",
         "properties" : {
-          "phoneNumber" : {
-            "$ref" : "PhoneNumber"
-          },
           "lastSeenTime" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "phoneNumber" : {
+            "$ref" : "PhoneNumber"
           }
         }
       },
@@ -185,8 +185,6 @@
           "$ref" : "UserInfo"
         }
       },
-      "com.gplayer.UserInfoEndpoint.removeUserInfo" : {
-      },
       "com.gplayer.UserInfoEndpoint.updateUserInfo" : {
         "request" : {
           "$ref" : "UserInfo"
@@ -194,6 +192,8 @@
         "response" : {
           "$ref" : "UserInfo"
         }
+      },
+      "com.gplayer.UserInfoEndpoint.removeUserInfo" : {
       }
     }
   }

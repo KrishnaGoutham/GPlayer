@@ -73,20 +73,16 @@
         "id" : "Song",
         "type" : "object",
         "properties" : {
-          "length" : {
-            "type" : "number",
-            "format" : "float"
-          },
           "title" : {
             "type" : "string"
           },
           "album" : {
             "type" : "string"
           },
-          "blobKey" : {
+          "artist" : {
             "type" : "string"
           },
-          "artist" : {
+          "blobKey" : {
             "type" : "string"
           },
           "songType" : {
@@ -94,6 +90,10 @@
           },
           "songInBlobStore" : {
             "type" : "boolean"
+          },
+          "length" : {
+            "type" : "number",
+            "format" : "float"
           }
         }
       },
